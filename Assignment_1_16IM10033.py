@@ -3,31 +3,27 @@ import matplotlib.pyplot as plt
 import nltk
 from nltk.corpus import brown
 from nltk import bigrams, ngrams, trigrams 
-
-
-
-###-----------Build Unigram Dictionary-----------------###
+from nltk.collocations import *
 
 # Data
 sentences=['a b a','b a a b','a a a','b a b b','b b a b','a a a b']
 
-unigrams=[]
+###-----------Build Unigram Dictionary-----------------###
+def unigram_model(sentences):
+	unigrams = []
 
-for elem in sentences:
-    unigrams.extend(elem.split())
-    #unigrams.extend(elem)                   # Self - Takes the spaces as unigrams too: Not to be used.
-#print(unigrams)								# Self    
+	for elem in sentences:
+		unigrams.extend(elem.split())
+	from collections import Counter
+	unigram_counts=Counter(unigrams)
+	unigram_total=len(unigrams)
 
-from collections import Counter
-unigram_counts=Counter(unigrams)
-unigram_total=len(unigrams)
+	for word in unigram_counts:
+		unigram_counts[word]/=unigram_total
+	return unigram_counts
 
-for word in unigram_counts:
-    unigram_counts[word]/=unigram_total
- 
+#unigram_counts = unigram_model(sentences)
 #print(unigram_counts)
-
-
 
 
 ###--------------Build bigram dictionary--------------------###
@@ -140,10 +136,23 @@ for sublist in brown_sents_lower:
 		brown_sents_final.append(item)
 #print(np.size(brown_sents_final))
 
-bigram_counts= bigram_model(brown_sents_final)
-print(bigram_counts)
-brown_sents_final.sort(key = bigram_counts, reverse = True)
-print(brown_sents_final)
+#.........Top 10 unigrams.......#
+unigram_counts = unigram_model(brown_sents_final)
+#for val,count in unigram_counts.most_common(10):
+	#print("Value: {0}     -> Freq {1}".format(val,count))
 
+#.........Top 10 bigrams.........#
+bigram_counts= bigram_model(brown_sents_final)
+bigram_measures = nltk.collocations.BigramAssocMeasures()
+finder = BigramCollocationFinder.from_words(brown_sents_final)
+# Top 10 according to pmi
+#print(finder.nbest(bigram_measures.pmi,10))
+# Top 10 according to frequency
+#print(finder.nbest(bigram_measures.raw_freq,10))
+finder.apply_freq_filter(1000)
+#print(finder.ngram_fd.items())
+print(finder.score_ngrams(bigram_measures.pmi))
+
+#..........Top 10 trigrams............#
 # trigram_counts = trigram_model(brown_sents_final)
 # print(trigram_counts)
