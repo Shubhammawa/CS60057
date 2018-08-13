@@ -22,8 +22,8 @@ def unigram_model(sentences):
 		unigram_counts[word]/=unigram_total
 	return unigram_counts
 
-#unigram_counts = unigram_model(sentences)
-#print(unigram_counts)
+unigram_counts = unigram_model(sentences)
+print(unigram_counts)
 
 
 ###--------------Build bigram dictionary--------------------###
@@ -43,8 +43,8 @@ def bigram_model(sentences):
      
     return model
 
-# bigram_counts= bigram_model(sentences)
-# print(bigram_counts)
+bigram_counts= bigram_model(sentences)
+print(bigram_counts)
 
 
 
@@ -66,60 +66,60 @@ def trigram_model(sentences):
      
     return model
 
-# trigram_counts= trigram_model(sentences)
-# print(trigram_counts)
+trigram_counts= trigram_model(sentences)
+print(trigram_counts)
 
 
 
 
 ###---------------Test Scores of each model-------------------###
-# test_sentences=['a b a b','b a b a','a b b','b a a a a a b','a a a','b b b b a']
-# test_unigram_arr=[]
+test_sentences=['a b a b','b a b a','a b b','b a a a a a b','a a a','b b b b a']
+test_unigram_arr=[]
 
-# print('\nUnigram test probabilities\n')
+print('\nUnigram test probabilities\n')
 
-# for elem in test_sentences:
-#     p_val=np.prod([unigram_counts[i] for i in elem.split()])
-#     test_unigram_arr.append(p_val)
-#     print('The sequence '+elem+' has unigram probablity of '+ str(round(p_val,4)))
+for elem in test_sentences:
+    p_val=np.prod([unigram_counts[i] for i in elem.split()])
+    test_unigram_arr.append(p_val)
+    print('The sequence '+elem+' has unigram probablity of '+ str(round(p_val,4)))
 
 
-# print('\nBigram test probabilities\n')
-# test_bigram_arr=[]
+print('\nBigram test probabilities\n')
+test_bigram_arr=[]
 
-# for elem in test_sentences:
-#     p_val=1
-#     for w1,w2 in bigrams(elem.split(),pad_left=True,pad_right=True):
-#         p_val*=bigram_counts[w1][w2]
-#     print('The sequence '+ elem +' has bigram probablity of '+ str(round(p_val,4)))
+for elem in test_sentences:
+    p_val=1
+    for w1,w2 in bigrams(elem.split(),pad_left=True,pad_right=True):
+        p_val*=bigram_counts[w1][w2]
+    print('The sequence '+ elem +' has bigram probablity of '+ str(round(p_val,4)))
     
-#     test_bigram_arr.append(p_val)
+    test_bigram_arr.append(p_val)
 
 
-# test_trigram_arr=[]
-# print('\nTrigram test probabilities\n')
-# for elem in test_sentences:
-#     p_val=1
-#     for w1,w2,w3 in trigrams(elem.split(),pad_left=True,pad_right=True):
-#         try:
-#             p_val*=trigram_counts[(w1,w2)][w3]
-#         except Exception as e:
-#             p_val=0
-#             break
-#     print('The sequence '+ elem +' has trigram probablity of '+ str(round(p_val,4)))
+test_trigram_arr=[]
+print('\nTrigram test probabilities\n')
+for elem in test_sentences:
+    p_val=1
+    for w1,w2,w3 in trigrams(elem.split(),pad_left=True,pad_right=True):
+        try:
+            p_val*=trigram_counts[(w1,w2)][w3]
+        except Exception as e:
+            p_val=0
+            break
+    print('The sequence '+ elem +' has trigram probablity of '+ str(round(p_val,4)))
     
-#     test_trigram_arr.append(p_val)
+    test_trigram_arr.append(p_val)
 
 
 
 
 
-# x_axis=[i for i in range(1,4)]
+x_axis=[i for i in range(1,4)]
 
-# y_axis=[np.mean(test_unigram_arr), np.mean(test_bigram_arr), np.mean(test_trigram_arr)]
+y_axis=[np.mean(test_unigram_arr), np.mean(test_bigram_arr), np.mean(test_trigram_arr)]
 
-# plt.scatter(x_axis,y_axis)
-# plt.show()
+plt.scatter(x_axis,y_axis)
+plt.show()
 
 
 ###-------------------Task 1 ------------------###
@@ -138,21 +138,21 @@ for sublist in brown_sents_lower:
 
 #.........Top 10 unigrams.......#
 unigram_counts = unigram_model(brown_sents_final)
-#for val,count in unigram_counts.most_common(10):
-	#print("Value: {0}     -> Freq {1}".format(val,count))
+for val,count in unigram_counts.most_common(10):
+	print("Value: {0}     -> Freq {1}".format(val,count))
 
 #.........Top 10 bigrams.........#
 bigram_counts= bigram_model(brown_sents_final)
 bigram_measures = nltk.collocations.BigramAssocMeasures()
 finder = BigramCollocationFinder.from_words(brown_sents_final)
 # Top 10 according to pmi
-#print(finder.nbest(bigram_measures.pmi,10))
+print(finder.nbest(bigram_measures.pmi,10))
 # Top 10 according to frequency
-#print(finder.nbest(bigram_measures.raw_freq,10))
+print(finder.nbest(bigram_measures.raw_freq,10))
 finder.apply_freq_filter(1000)
-#print(finder.ngram_fd.items())
+print(finder.ngram_fd.items())
 print(finder.score_ngrams(bigram_measures.pmi))
 
 #..........Top 10 trigrams............#
-# trigram_counts = trigram_model(brown_sents_final)
-# print(trigram_counts)
+trigram_counts = trigram_model(brown_sents_final)
+print(trigram_counts)
