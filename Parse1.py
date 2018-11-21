@@ -111,4 +111,3 @@ for filename in os.listdir(path):
 #pickle.dump(super_natural,file)
 #pickle.dump(super_trigger,file)
 #file.close()
-                    
