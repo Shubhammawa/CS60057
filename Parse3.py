@@ -33,10 +33,10 @@ def listappend(text,event_tag,event_type):
     global super_sentence
     global super_trigger
     global trigger
-    global super_natural
-    global natural
+    #global super_natural
+    #global natural
     
-    EOS = False
+    #	EOS = False
     '''
     if text!=None:
         try: 
@@ -51,22 +51,22 @@ def listappend(text,event_tag,event_type):
         return
     if text != None:
        
-        if '।' in text:
-            EOS = True
+        # if '।' in text:
+        #     EOS = True
         
         sentence.append(text)
         trigger.append(event_type)
-        natural.append(event_tag)
-    else :
-        EOS = True
-    if EOS:
+        #natural.append(event_tag)
+    # else :
+    #     EOS = True
+    #if EOS:
         #print(sentence)
-        super_sentence.append(sentence)
-        sentence =[]
-        super_trigger.append(trigger)
-        trigger =[]
-        super_natural.append(natural)
-        natural =[]
+        # super_sentence.append(sentence)
+        # sentence =[]
+        # super_trigger.append(trigger)
+        # trigger =[]
+        #super_natural.append(natural)
+        #natural =[]
 
 
 def parsedoc(document) :
@@ -110,33 +110,79 @@ c=0
 
 for filename in os.listdir(path):
     c=c+1
-    super_sentence = []
-    super_natural = []
-    super_trigger = []
-    sentence = []
-    natural = []
-    trigger = []
-    if not filename.endswith('.xml'): continue
+    #super_sentence = []
+    #super_natural = []
+    #super_trigger = []
+    # sentence = []
+    # natural = []
+    # trigger = []
+    #if not filename.endswith('.xml'): continue
     fullname = os.path.join(path, filename)
     print(fullname)
     tree = ET.parse(fullname)
     parsedoc(tree.getroot())
-    file = open('result.pkl','wb')
-    pickle.dump(super_sentence,file)
-    pickle.dump(super_natural,file)
-    pickle.dump(super_trigger,file)
-    file.close()
-              
-print(c)
+    super_sentence.append(sentence)
+    #sentence =[]
+    super_trigger.append(trigger)
+    #trigger =[]
+    # file = open('result.pkl','ab')
+    # pickle.dump(sentence,file)
+    sentence = []
+    #pickle.dump(super_natural,file)
+    #pickle.dump(trigger,file)
+    trigger = []
+    #file.close()
 
-#Writes the varibles to File
-#
-file = open('result.pkl','wb')
-print(super_sentence)
+file = open('result.pkl','ab')
 pickle.dump(super_sentence,file)
-print(super_natural)
-pickle.dump(super_natural,file)
-print(super_trigger)
 pickle.dump(super_trigger,file)
-file.close()
+#file.close()
+
+super_sentence = []
+super_trigger = []
+
+path = '/media/shubham/1A2A3CBF2A3C99A9/Academics/Sem_5/Speech and Natural Language Processing/CS60057/event_extraction_nlp_project/hindi_anntated/Test'
+c=0
+
+for filename in os.listdir(path):
+    c=c+1
+    #super_sentence = []
+    #super_natural = []
+    #super_trigger = []
+    # sentence = []
+    # natural = []
+    # trigger = []
+    #if not filename.endswith('.xml'): continue
+    fullname = os.path.join(path, filename)
+    print(fullname)
+    tree = ET.parse(fullname)
+    parsedoc(tree.getroot())
+    super_sentence.append(sentence)
+    #sentence =[]
+    super_trigger.append(trigger)
+    #trigger =[]
+    #file = open('result.pkl','ab')
+    #pickle.dump(sentence,file)
+    sentence = []
+    #pickle.dump(super_natural,file)
+    #pickle.dump(trigger,file)
+    trigger = []
+    #file.close()
+pickle.dump(super_sentence,file)
+pickle.dump(super_trigger,file)
+file.close()   
+
+
+print(c)
+print(len(super_sentence))
+#Writes the varibles to File
+
+# file = open('result.pkl','ab')
+# print(super_sentence)
+# pickle.dump(super_sentence,file)
+# print(super_natural)
+# pickle.dump(super_natural,file)
+# print(super_trigger)
+# pickle.dump(super_trigger,file)
+# file.close()
                     
